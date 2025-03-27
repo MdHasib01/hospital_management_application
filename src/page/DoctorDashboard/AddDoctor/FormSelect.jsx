@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Label } from "@radix-ui/react-dropdown-menu";
 const payload = [
   { day: "Sunday", start: "09:00", end: "21:00" },
   { day: "Monday", start: "09:00", end: "21:00" },
@@ -57,8 +58,10 @@ const times = {
 };
 const FormSelect = ({ form }) => {
   const [selection, setSelection] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(false);
 
-  const handleSelect = (selectedValue, day, type) => {
+  const handleSelect = (selectedValue, day, type, setValue) => {
+    setIsDisabled(true);
     const filterValue = selection.filter((val) => val.day === day)[0];
     const filtered = selection.filter((val) => val.day != day);
     let newValue;
@@ -66,25 +69,26 @@ const FormSelect = ({ form }) => {
       newValue = {
         ...filterValue,
         day: day,
-        start: selectedValue,
+        startTime: selectedValue,
       };
     } else {
       newValue = {
         ...filterValue,
         day: day,
-        end: selectedValue,
+        endTime: selectedValue,
       };
     }
     setSelection([...filtered, newValue]);
-    form.setValue("availability", [...filtered, newValue]);
+    setValue("availability", [...filtered, newValue]);
     console.log(newValue);
     console.log(selection);
+    setIsDisabled(false);
   };
 
   return (
-    <div className="m-10">
+    <div className="mb-2">
       <h2>Select avaliliblity</h2>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
         {days.map((day) => (
           <FormField
             control={form.control}
@@ -92,77 +96,69 @@ const FormSelect = ({ form }) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{day}</FormLabel>
-                <Select
-                  onValueChange={(value) => handleSelect(value, day, "start")}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Start Time" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.entries(times).map((time, index) => (
-                      <SelectItem key={index} value={time[0]}>
-                        {time[1]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select
-                  onValueChange={(value) => handleSelect(value, day, "end")}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Start Time" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {Object.entries(times).map((time, index) => (
-                      <SelectItem key={index} value={time[0]}>
-                        {" "}
-                        {time[1]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  You can manage email addresses in your{" "}
-                </FormDescription>
+                <div className="flex">
+                  <Select
+                    disabled={isDisabled}
+                    value={
+                      selection.find((val) => val.day === day)?.startTime || ""
+                    }
+                    onValueChange={(value) =>
+                      handleSelect(value, day, "start", form.setValue)
+                    }
+                    defaultValue={field.value}
+                  >
+                    <div className="relative flex items-center">
+                      <Label className="absolute left-2 font-semibold">
+                        From:
+                      </Label>
+                      <FormControl className="pl-15 rounded-r-none">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Start Time" />
+                        </SelectTrigger>
+                      </FormControl>
+                    </div>
+                    <SelectContent>
+                      {Object.entries(times).map((time, index) => (
+                        <SelectItem key={index} value={time[0]}>
+                          {time[1]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    disabled={isDisabled}
+                    value={
+                      selection.find((val) => val.day === day)?.endTime || ""
+                    }
+                    onValueChange={(value) =>
+                      handleSelect(value, day, "end", form.setValue)
+                    }
+                    defaultValue={field.value}
+                  >
+                    <div className="relative flex items-center">
+                      <Label className="absolute left-2 font-semibold">
+                        To:
+                      </Label>
+                      <FormControl className="pl-10 rounded-l-none">
+                        <SelectTrigger>
+                          <SelectValue placeholder="End Time" />
+                        </SelectTrigger>
+                      </FormControl>
+                    </div>
+                    <SelectContent>
+                      {Object.entries(times).map((time, index) => (
+                        <SelectItem value={time[0]}>{time[1]}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <FormMessage />
               </FormItem>
             )}
           />
         ))}
       </div>
-      {/* <div>
-        <p className="font-bold">{day}</p>
-        <p>From</p>
-        <select name={day} id="" defaultValue="" onChange={handleSelectStart}>
-          <option value="" disabled hidden>
-            Select start time
-          </option>
-          {Object.entries(times).map((time, index) => (
-            <option key={index} value={time[0]}>
-              {" "}
-              {time[1]}
-            </option>
-          ))}
-        </select>
-        <p>To</p>
-        <select name={day} id="" defaultValue="" onChange={handleSelectEnd}>
-          <option value="" disabled hidden>
-            Select end time
-          </option>
-          {Object.entries(times).map((time, index) => (
-            <option key={index} value={time[0]}>
-              {" "}
-              {time[1]}
-            </option>
-          ))}
-        </select>
-      </div> */}
     </div>
   );
 };

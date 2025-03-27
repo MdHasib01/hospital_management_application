@@ -62,7 +62,7 @@ const DoctorsCard = () => {
       <div className="p-2">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {doctors.map((doctor) => (
-            <div className="p-4 border bg-white shadow-lg rounded-md flex justify-center items-center flex-col dark:bg-blue-900">
+            <div className="p-4 border bg-white shadow-lg rounded-md flex justify-center items-center flex-col dark:bg-gray-900">
               <img src={doctor.image} class="w-30 rounded-full" alt="" />
               <p className="font-bold text-2xl mt-2">{doctor.name}</p>
               <p>{doctor.yearOfExperience} years of experience</p>

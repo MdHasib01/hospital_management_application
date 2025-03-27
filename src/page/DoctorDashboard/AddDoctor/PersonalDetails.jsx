@@ -108,7 +108,7 @@ const PersonalDetails = ({ form }) => {
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a verified email to display" />
+                  <SelectValue placeholder="Select Marital Statuss" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>

@@ -12,6 +12,7 @@ import { Eye, SquarePen, SquarePlus, Trash, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import user4 from "@/assets/userImages/user4.png";
 import Header from "@/components/header";
+import { Link } from "react-router";
 const variant = {
   action_delete:
     "w-4 h-4 bg-red-200 hover:bg-red-300 rounded-lg p-2 box-content  dark:bg-red-500 dark:hover:bg-red-600",
@@ -24,13 +25,15 @@ const DoctorList = () => {
   return (
     <div>
       <Header link={"Doctors"} page={"Doctors List"} />
-      <div className="p-2">
+      <div className="m-2 p-2 rounded-lg  bg-white dark:bg-gray-900">
         <div className="flex justify-between">
           <h2>Docrors List</h2>
-          <Button className="flex items-center gap-1">
-            <SquarePlus />
-            Add Doctor
-          </Button>
+          <Link to="/add-doctor">
+            <Button className="flex items-center gap-1">
+              <SquarePlus />
+              Add Doctor
+            </Button>
+          </Link>
         </div>
         <Table>
           <TableCaption>List of doctors.</TableCaption>
