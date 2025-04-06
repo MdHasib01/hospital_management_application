@@ -36,15 +36,7 @@ const FormSchema = z.object({
   password: z.string().min(1, { message: "Password is required." }),
   confirmPassword: z
     .string()
-    .refine((value, ctx) => {
-      if (value !== form.getValues("password")) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Passwords do not match.",
-        });
-      }
-      return true;
-    })
+
     .optional(),
   age: z.string().min(1, { message: "Age is required." }),
   gender: z.string().min(1, { message: "Gender is required." }),
