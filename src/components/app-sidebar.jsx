@@ -11,6 +11,8 @@ import {
   Settings2,
   SquareTerminal,
   Stethoscope,
+  User,
+  ScrollText,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -28,25 +30,15 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Md Hasib",
+    email: "mdhasib@gmail.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "MediCore HMS",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      plan: "Hospital Management System",
     },
   ],
   navMain: [
@@ -58,64 +50,62 @@ const data = {
       items: [
         {
           title: "Dcotors List",
-          url: "/doctors-list",
+          url: "/dashboard/doctors-list",
         },
         {
           title: "Doctors Card",
-          url: "/doctors-card",
+          url: "/dashboard/doctors-card",
         },
         {
           title: "Doctor Profile",
-          url: "/doctor-profile",
+          url: "/dashboard/doctor-profile",
         },
         {
           title: "Add Doctor",
-          url: "/add-doctor",
+          url: "/dashboard/add-doctor",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Patients",
       url: "#",
-      icon: Bot,
+      icon: User,
+      isActive: true,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Patients List",
+          url: "/dashboard/doctors-list",
         },
         {
-          title: "Explorer",
-          url: "#",
+          title: "Book Appointment",
+          url: "/dashboard/doctors-card",
         },
         {
-          title: "Quantum",
-          url: "#",
+          title: "Patitent Profile",
+          url: "/dashboard/doctor-profile",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Appointments",
       url: "#",
-      icon: BookOpen,
+      icon: ScrollText,
       items: [
         {
-          title: "Introduction",
+          title: "Appointments",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "Set Appointments",
           url: "#",
         },
         {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "Add Patient",
+          url: "/dashboard/add-doctor",
         },
       ],
     },
+
     {
       title: "Settings",
       url: "#",
@@ -125,36 +115,7 @@ const data = {
           title: "General",
           url: "#",
         },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
       ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 };
@@ -167,7 +128,6 @@ export function AppSidebar({ ...props }) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

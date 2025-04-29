@@ -6,10 +6,15 @@ import SalaryTable from "./components/SalaryTable.jsx";
 import DoctorList from "./page/DoctorDashboard/DoctorList";
 import DoctorsCard from "./page/DoctorDashboard/DoctorsCard";
 import DoctorProfile from "./page/DoctorDashboard/DoctorProfile";
+import LogoinPage from "./page/LoginPage";
 import { AddDoctor } from "./page/DoctorDashboard/AddDoctor/AddDoctor";
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
+    element: <LogoinPage />,
+  },
+  {
+    path: "/dashboard",
     element: <Dashboard />,
     children: [
       { path: "salary", element: <SalaryTable /> },

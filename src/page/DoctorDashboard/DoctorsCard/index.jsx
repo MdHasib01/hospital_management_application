@@ -58,7 +58,7 @@ const doctors = [
 const DoctorsCard = () => {
   return (
     <div className="bg-gray-100 dark:bg-black">
-      <Header link={"Doctors"} page={"Doctors Card"} />
+      <Header link={"Patients"} page={"Book Appointments"} />
       <div className="p-2">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {doctors.map((doctor) => (
