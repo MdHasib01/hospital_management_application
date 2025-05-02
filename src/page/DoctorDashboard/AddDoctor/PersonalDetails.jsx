@@ -23,7 +23,7 @@ const PersonalDetails = ({ form }) => {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
       <FormField
         control={form.control}
-        name="firstName"
+        name="firstname"
         render={({ field }) => (
           <FormItem>
             <FormLabel>First Name</FormLabel>
@@ -36,7 +36,7 @@ const PersonalDetails = ({ form }) => {
       />
       <FormField
         control={form.control}
-        name="lastName"
+        name="lastname"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Last Name</FormLabel>
@@ -88,17 +88,18 @@ const PersonalDetails = ({ form }) => {
       />
       <FormField
         control={form.control}
-        name="mobile"
+        name="specialization"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Mobile</FormLabel>
+            <FormLabel>Specialization</FormLabel>
             <FormControl>
-              <Input placeholder="Mobile" {...field} />
+              <Input placeholder="specialization" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
         name="maritalStatus"
@@ -149,7 +150,7 @@ const PersonalDetails = ({ form }) => {
       />
       <FormField
         control={form.control}
-        name="bloodGroup"
+        name="blood_group"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Blood Group</FormLabel>
@@ -214,7 +215,7 @@ const PersonalDetails = ({ form }) => {
       />
       <FormField
         control={form.control}
-        name="postalCode"
+        name="postal_code"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Postal Code</FormLabel>

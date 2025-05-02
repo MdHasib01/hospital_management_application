@@ -27,7 +27,7 @@ const ProfileDetails = ({ form }) => {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
       <FormField
         control={form.control}
-        name="userName"
+        name="username"
         render={({ field }) => (
           <FormItem>
             <FormLabel>User Name</FormLabel>

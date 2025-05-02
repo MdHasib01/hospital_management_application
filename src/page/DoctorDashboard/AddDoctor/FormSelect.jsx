@@ -56,7 +56,7 @@ const times = {
   "22:00": "10 PM",
   "23:00": "11 PM",
 };
-const FormSelect = ({ form }) => {
+const FormSelect = () => {
   const [selection, setSelection] = useState([]);
   const [isDisabled, setIsDisabled] = useState(false);
 

@@ -53,10 +53,6 @@ const data = {
           url: "/dashboard/doctors-list",
         },
         {
-          title: "Doctors Card",
-          url: "/dashboard/doctors-card",
-        },
-        {
           title: "Doctor Profile",
           url: "/dashboard/doctor-profile",
         },

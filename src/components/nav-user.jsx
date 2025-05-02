@@ -86,6 +86,7 @@ export function NavUser({ user }) {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
+                localStorage.removeItem("token");
                 window.location.replace("/");
               }}
             >

@@ -5,6 +5,8 @@ import user4 from "@/assets/userImages/user4.png";
 import { Button } from "@/components/ui/button";
 import { HeartPulse, Star, Syringe } from "lucide-react";
 import Header from "@/components/header";
+import { useParams } from "react-router";
+import { useEffect, useState } from "react";
 const iconVariant = {
   surgery:
     "w-12 h-12 bg-red-200 text-red-500 dark:text-white hover:bg-red-300 rounded-lg p-2 box-content  dark:bg-red-500 dark:hover:bg-red-600",
@@ -14,6 +16,23 @@ const iconVariant = {
     "w-12 h-12 text-blue-500 dark:text-white bg-blue-200 hover:bg-blue-300 rounded-lg p-2 box-content dark:bg-blue-500 dark:hover:bg-blue-600",
 };
 const DoctorProfile = () => {
+  const { id } = useParams();
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
+  const [doctor, setDoctor] = useState({});
+  console.log(doctor);
+  useEffect(() => {
+    setToken(JSON.parse(localStorage.getItem("token")));
+    fetch(`http://localhost:8080/v1/doctors/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setDoctor(data.data));
+  }, []);
+  console.log(id);
   return (
     <div className="bg-gray-100 dark:bg-black">
       <Header link={"Doctors"} page={"Doctor Profile"} />
@@ -26,14 +45,17 @@ const DoctorProfile = () => {
           />
           <div className="col-span-3 mt-5">
             <p className="text-xs text-white">Hello I am,</p>
-            <p className="font-bold text-xl text-white">Ales Hell</p>
-            <p className="text-white font-semibold">
-              MBBS, MS - General Surgery, General Physician
+            <p className="font-bold text-xl text-white">
+              {doctor.firstname} {doctor.lastname}
             </p>
+            <p className="text-white text-sm">{doctor.email}</p>
             <p className="text-white font-semibold">
-              16 Years Experience Overall
+              {doctor.designation}, {doctor.qualification}
             </p>
-            <p className="text-white font-semibold">298 Reviews</p>
+            <p className="text-white font-semibold">{doctor.specialization}</p>
+            <p className="text-white font-semibold">
+              License No: {doctor.license_number}
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 mt-4 gap-4">

@@ -3,13 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router";
+import { useState } from "react";
 
 export function LoginForm({ className, ...props }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleLogin = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:8080/v1/authentication/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("token", JSON.stringify(data.data));
+        window.location.href = "/dashboard";
+      });
+  };
+
   return (
     <form
       className={cn("flex flex-col gap-6", className)}
       {...props}
-      onSubmit={(e) => e.preventDefault()}
+      onSubmit={handleLogin}
     >
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
@@ -20,7 +39,14 @@ export function LoginForm({ className, ...props }) {
       <div className="grid gap-6">
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" />
+          <Input
+            id="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="m@example.com"
+          />
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
@@ -32,15 +58,15 @@ export function LoginForm({ className, ...props }) {
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" />
+          <Input
+            id="password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+          />
         </div>
-        <Button
-          type="submit"
-          className="w-full"
-          onClick={() => {
-            window.location.replace("/dashboard");
-          }}
-        >
+        <Button type="submit" className="w-full">
           Login
         </Button>
         <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">

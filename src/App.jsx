@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { path: "salary", element: <SalaryTable /> },
       { path: "doctors-list", element: <DoctorList /> },
       { path: "doctors-card", element: <DoctorsCard /> },
-      { path: "doctor-profile", element: <DoctorProfile /> },
+      { path: "doctor-profile/:id", element: <DoctorProfile /> },
       { path: "add-doctor", element: <AddDoctor /> },
     ],
   },

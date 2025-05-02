@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,10 +9,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Eye, SquarePen, SquarePlus, Trash, User } from "lucide-react";
+import { FaCheckCircle } from "react-icons/fa";
+import { IoCloseCircle } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import user4 from "@/assets/userImages/user4.png";
 import Header from "@/components/header";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 const variant = {
   action_delete:
     "w-4 h-4 bg-red-200 hover:bg-red-300 rounded-lg p-2 box-content  dark:bg-red-500 dark:hover:bg-red-600",
@@ -22,13 +24,32 @@ const variant = {
     "w-4 h-4 bg-blue-200 hover:bg-blue-300 rounded-lg p-2 box-content dark:bg-blue-500 dark:hover:bg-blue-600",
 };
 const DoctorList = () => {
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
+  const [doctors, setDoctors] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    setToken(JSON.parse(localStorage.getItem("token")));
+    fetch("http://localhost:8080/v1/doctors", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setDoctors(data.data));
+  }, []);
+  console.log(doctors);
+  const isAvailable = (day, availability) => {
+    return availability?.includes(day?.toLowerCase());
+  };
   return (
     <div>
       <Header link={"Doctors"} page={"Doctors List"} />
       <div className="m-2 p-2 rounded-lg  bg-white dark:bg-gray-900">
         <div className="flex justify-between">
           <h2>Docrors List</h2>
-          <Link to="/add-doctor">
+          <Link to="/dashboard/add-doctor">
             <Button className="flex items-center gap-1">
               <SquarePlus />
               Add Doctor
@@ -53,33 +74,91 @@ const DoctorList = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">#001</TableCell>
-              <TableCell className="flex items-center gap-2">
-                <img
-                  src={user4}
-                  class="rounded-full w-8 border"
-                  alt="user image"
-                />
-                {/* <div className=" rounded-full bg-blue-600 p-2">
+            {doctors.map((doctor, index) => (
+              <TableRow key={doctor.user_id}>
+                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell className="flex items-center gap-2">
+                  <img
+                    src={user4}
+                    className="rounded-full w-8 border"
+                    alt="user image"
+                  />
+                  {/* <div className=" rounded-full bg-blue-600 p-2">
                   <User className=" w-5 h-5 text-white" />
                 </div> */}
-                <span className="font-bold">Allan Stuart</span>
-              </TableCell>
-              <TableCell>Therapist</TableCell>
-              <TableCell>N/A</TableCell>
-              <TableCell>9AM-2PM</TableCell>
-              <TableCell>9AM-2PM</TableCell>
-              <TableCell>9AM-2PM</TableCell>
-              <TableCell>9AM-2PM</TableCell>
-              <TableCell>9AM-2PM</TableCell>
-              <TableCell>9AM-2PM</TableCell>
-              <TableCell className=" flex gap-1">
-                <Trash className={variant.action_delete} />
-                <SquarePen className={variant.action_edit} />
-                <Eye className={variant.action_view} />
-              </TableCell>
-            </TableRow>
+                  <span className="font-bold">
+                    {doctor.firstname} {doctor.lastname}
+                  </span>
+                </TableCell>
+                <TableCell>{doctor.designation}</TableCell>
+
+                <TableCell>
+                  {isAvailable("saturday", doctor.availability) ? (
+                    <FaCheckCircle className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <IoCloseCircle className="text-red-500 w-6 h-6" />
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  {isAvailable("sunday", doctor.availability) ? (
+                    <FaCheckCircle className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <IoCloseCircle className="text-red-500 w-6 h-6" />
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  {isAvailable("monday", doctor.availability) ? (
+                    <FaCheckCircle className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <IoCloseCircle className="text-red-500 w-6 h-6" />
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  {isAvailable("tuesday", doctor.availability) ? (
+                    <FaCheckCircle className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <IoCloseCircle className="text-red-500 w-6 h-6" />
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  {isAvailable("wednesday", doctor.availability) ? (
+                    <FaCheckCircle className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <IoCloseCircle className="text-red-500 w-6 h-6" />
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  {isAvailable("thursday", doctor.availability) ? (
+                    <FaCheckCircle className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <IoCloseCircle className="text-red-500 w-6 h-6" />
+                  )}
+                </TableCell>
+                <TableCell>
+                  {isAvailable("friday", doctor.availability) ? (
+                    <FaCheckCircle className="text-green-500 w-6 h-6" />
+                  ) : (
+                    <IoCloseCircle className="text-red-500 w-6 h-6" />
+                  )}
+                </TableCell>
+
+                <TableCell className=" flex gap-1 justify-center">
+                  <Trash className={variant.action_delete} />
+
+                  <Eye
+                    className={variant.action_view}
+                    onClick={() =>
+                      navigate(`/dashboard/doctor-profile/${doctor.user_id}`)
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
