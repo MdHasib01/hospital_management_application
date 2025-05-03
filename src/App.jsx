@@ -10,6 +10,7 @@ import LogoinPage from "./page/LoginPage";
 import { AddDoctor } from "./page/DoctorDashboard/AddDoctor/AddDoctor";
 import { ToastContainer } from "react-toastify";
 import Confirm from "./page/Confirm";
+import AppointmentList from "./page/DoctorDashboard/DoctorsCard";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "doctors-card", element: <DoctorsCard /> },
       { path: "doctor-profile/:id", element: <DoctorProfile /> },
       { path: "add-doctor", element: <AddDoctor /> },
+      { path: "appointments", element: <AppointmentList /> },
     ],
   },
 ]);

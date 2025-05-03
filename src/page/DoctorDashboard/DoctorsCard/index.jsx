@@ -1,85 +1,93 @@
-import user from "@/assets/userImages/user.png";
-import user1 from "@/assets/userImages/user1.png";
-import user2 from "@/assets/userImages/user2.png";
-import user4 from "@/assets/userImages/user4.png";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Eye, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
 import Header from "@/components/header";
-const doctors = [
-  {
-    id: 1,
-    name: "John Doe",
-    image: user,
-    yearOfExperience: 5,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    image: user1,
-    yearOfExperience: 3,
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    image: user2,
-    yearOfExperience: 8,
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    image: user4,
-    yearOfExperience: 2,
-  },
-  {
-    id: 1,
-    name: "John Doe",
-    image: user,
-    yearOfExperience: 5,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    image: user1,
-    yearOfExperience: 3,
-  },
-  {
-    id: 3,
-    name: "Michael Johnson",
-    image: user2,
-    yearOfExperience: 8,
-  },
-  {
-    id: 4,
-    name: "Emily Davis",
-    image: user4,
-    yearOfExperience: 2,
-  },
-];
-const DoctorsCard = () => {
+import { Link, useNavigate } from "react-router";
+
+const variant = {
+  action_delete:
+    "w-4 h-4 bg-red-200 hover:bg-red-300 rounded-lg p-2 box-content  dark:bg-red-500 dark:hover:bg-red-600",
+  action_view:
+    "w-4 h-4 bg-blue-200 hover:bg-blue-300 rounded-lg p-2 box-content dark:bg-blue-500 dark:hover:bg-blue-600",
+};
+
+const AppointmentList = () => {
+  const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));
+  const [appointments, setAppointments] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setToken(JSON.parse(localStorage.getItem("token")));
+    fetch("http://localhost:8080/v1/appointments", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setAppointments(data.data));
+  }, []);
+
+  console.log(appointments);
+
   return (
-    <div className="bg-gray-100 dark:bg-black">
-      <Header link={"Patients"} page={"Book Appointments"} />
-      <div className="p-2">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {doctors.map((doctor) => (
-            <div className="p-4 border bg-white shadow-lg rounded-md flex justify-center items-center flex-col dark:bg-gray-900">
-              <img src={doctor.image} className="w-30 rounded-full" alt="" />
-              <p className="font-bold text-2xl mt-2">{doctor.name}</p>
-              <p>{doctor.yearOfExperience} years of experience</p>
-              <div className="flex gap-1 my-1">
-                <Star className="text-yellow-500 w-5" />
-                <Star className="text-yellow-500 w-5" />
-                <Star className="text-yellow-500 w-5" />
-                <Star className="text-yellow-500 w-5" />
-                <Star className="text-yellow-500 w-5" />
-              </div>
-              <Button className="my-2">Book Appointment</Button>
-            </div>
-          ))}
+    <div>
+      <Header link={"Appointments"} page={"Appointments List"} />
+      <div className="m-2 p-2 rounded-lg bg-white dark:bg-gray-900">
+        <div className="flex justify-between">
+          <h2>Appointments List</h2>
+          <Link to="/dashboard/add-appointment">
+            <Button className="flex items-center gap-1">Add Appointment</Button>
+          </Link>
         </div>
+        <Table>
+          <TableCaption>List of appointments.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">ID</TableHead>
+              <TableHead>Doctor Email</TableHead>
+              <TableHead>Patient Email</TableHead>
+              <TableHead>Appointment Time</TableHead>
+              <TableHead className="text-center">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {appointments.map((appointment, index) => (
+              <TableRow key={appointment.id}>
+                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell>
+                  {appointment.doctor_first_name} {appointment.doctor_last_name}
+                </TableCell>
+                <TableCell>
+                  {appointment.patient_first_name} {appointment.patient_email}
+                </TableCell>
+                <TableCell>{appointment.appointment_time}</TableCell>
+                <TableCell className="flex gap-1 justify-center">
+                  <Trash className={variant.action_delete} />
+                  <Eye
+                    className={variant.action_view}
+                    onClick={() =>
+                      navigate(`/dashboard/appointment/${appointment.id}`)
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
 };
 
-export default DoctorsCard;
+export default AppointmentList;
