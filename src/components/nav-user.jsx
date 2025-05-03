@@ -26,9 +26,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export function NavUser({ user }) {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -87,7 +90,8 @@ export function NavUser({ user }) {
             <DropdownMenuItem
               onClick={() => {
                 localStorage.removeItem("token");
-                window.location.replace("/");
+                navigate("/");
+                toast.success("Logged out successfully");
               }}
             >
               <LogOut />

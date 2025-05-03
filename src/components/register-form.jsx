@@ -3,21 +3,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { use, useState } from "react";
 import { toast } from "react-toastify";
-export function LoginForm({ className, setForm, ...props }) {
+import { set } from "react-hook-form";
+export function RegisterForm({ className, setForm, ...props }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:8080/v1/authentication/token", {
+      const res = await fetch("http://localhost:8080/v1/authentication/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, username }),
       });
 
       if (!res.ok) {
@@ -25,9 +27,9 @@ export function LoginForm({ className, setForm, ...props }) {
       }
 
       const data = await res.json();
-      localStorage.setItem("token", JSON.stringify(data.data));
-      navigate("/dashboard");
-      toast.success("Login successful");
+
+      setForm(1);
+      toast.success("Account creation successful, Check email");
     } catch (error) {
       toast.error("Login failed");
       console.error("There was a problem with the fetch operation:", error);
@@ -41,12 +43,23 @@ export function LoginForm({ className, setForm, ...props }) {
       onSubmit={handleLogin}
     >
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">Login to your account</h1>
+        <h1 className="text-2xl font-bold">Register an account</h1>
         <p className="text-muted-foreground text-sm text-balance">
-          Enter your email below to login to your account
+          Enter your info below to register a new account
         </p>
       </div>
       <div className="grid gap-6">
+        <div className="grid gap-3">
+          <Label htmlFor="username">User Name</Label>
+          <Input
+            id="username"
+            type="text"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="username"
+          />
+        </div>
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
           <Input
@@ -61,12 +74,6 @@ export function LoginForm({ className, setForm, ...props }) {
         <div className="grid gap-3">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
-            <a
-              href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
-            >
-              Forgot your password?
-            </a>
           </div>
           <Input
             id="password"
@@ -95,12 +102,12 @@ export function LoginForm({ className, setForm, ...props }) {
         </Button>
       </div>
       <div className="text-center text-sm">
-        Don&apos;t have an account?{" "}
+        Already have an account?{" "}
         <a
-          onClick={() => setForm(2)}
           className="underline underline-offset-4 cursor-pointer"
+          onClick={() => setForm(1)}
         >
-          Sign up
+          Login
         </a>
       </div>
     </form>

@@ -8,10 +8,16 @@ import DoctorsCard from "./page/DoctorDashboard/DoctorsCard";
 import DoctorProfile from "./page/DoctorDashboard/DoctorProfile";
 import LogoinPage from "./page/LoginPage";
 import { AddDoctor } from "./page/DoctorDashboard/AddDoctor/AddDoctor";
+import { ToastContainer } from "react-toastify";
+import Confirm from "./page/Confirm";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LogoinPage />,
+  },
+  {
+    path: "/confirm/:token",
+    element: <Confirm />,
   },
   {
     path: "/dashboard",
@@ -30,6 +36,7 @@ function App() {
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <RouterProvider router={router} />
+        <ToastContainer position="bottom-right" autoClose={2000} />
       </ThemeProvider>
     </>
   );

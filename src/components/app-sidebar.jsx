@@ -52,10 +52,7 @@ const data = {
           title: "Dcotors List",
           url: "/dashboard/doctors-list",
         },
-        {
-          title: "Doctor Profile",
-          url: "/dashboard/doctor-profile",
-        },
+
         {
           title: "Add Doctor",
           url: "/dashboard/add-doctor",
